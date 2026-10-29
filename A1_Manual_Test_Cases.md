@@ -1,41 +1,41 @@
-A1 — Manual Test Suite
+# A1 — Manual Test Suite
 
-1. Questions and Assumptions
+## 1. Questions and Assumptions
 
 - Login validation
 
-Question: Should the application display a specific error message for an invalid username, invalid password, or locked out account?
-Assumption: Login must be rejected for invalid credentials and locked out users, with a clear error message.
+Question: Should the application show a clear error message for an invalid username, invalid password, or a locked-out account?
+Assumption: Login should be rejected for invalid or locked-out user data, and the user should see a meaningful error message.
 
 - Cart behaviour
 
-Question: Can a customer add multiple quantities of the same product, or can each product appear only once in the cart?
-Assumption: Each product can be added only once unless the application explicitly supports quantity changes.
+Question: Can a customer add multiple quantities of the same product, or is each product limited to one entry in the cart?
+Assumption: Each product is added once unless the application clearly supports quantity changes.
 
 - Checkout validation
 
-Question: What validation rules apply to first name, last name, and postal code? Are there restrictions on length, special characters, or postalcode formats?
-Assumption: All three fields are required. Empty fields must produce an appropriate validation message. Format validation will be tested only where the application or product requirements define it.
+Question: What validation rules apply to first name, last name, and postal code? Are there restrictions on length, allowed characters, or format?
+Assumption: All three fields are required. Empty values should trigger the appropriate validation message. Format checks should be tested only where the application or business requirements define them.
 
 - Price calculation
 
-Question: How is tax calculated, and how should rounding be handled?
-Assumption: The item total must equal the sum of the displayed product prices. The displayed total must equal the item total plus tax, subject to the application's currencyrounding rules.
+Question: How is tax calculated and how should rounding be handled?
+Assumption: The item total should match the sum of the displayed product prices, and the total should match item total plus tax according to the application's currency rules.
 
 - Order cancellation
 
-Question: Should cancelling checkout preserve the cart contents?
-Assumption: Cancelling checkout must not place an order, and the customer should be able to return to shopping without unintentionally losing cart contents.
+Question: Should cancelling checkout keep the cart contents intact?
+Assumption: Cancelling checkout should not place an order and should return the customer to shopping without losing their cart contents accidentally.
 
 - Session security
 
-Question: What should happen if a logged out customer attempts to access an internal page using a saved URL or the browser's Back button?
-Assumption: Protected pages must not expose authenticated shopping information to a logged out user. The user should be redirected to login or otherwise denied access.
+Question: What should happen if a logged-out customer tries to access a protected page through a saved URL or browser history?
+Assumption: Protected pages should not reveal authenticated information to a logged-out user. The user should be redirected to login or otherwise denied access.
 
 - Accessibility and supported devices
 
-Question: Which browsers, screen sizes, and accessibility standards must the application support?
-Assumption: The main shopping workflow should remain usable at common desktop and mobile viewport sizes, with keyboardaccessible controls and clearly identifiable form fields and errors.
+Question: Which browsers, viewport sizes, and accessibility standards should be supported?
+Assumption: The main shopping flow should still be usable on common desktop and mobile sizes, with keyboard-friendly controls and clearly labeled form fields and errors.
 
 
 
@@ -86,6 +86,7 @@ Assumption: The main shopping workflow should remain usable at common desktop an
 
 
 
+
 # Exploratory Testing Charter
 
 Title: Explore the shopping journey using the problem user.
@@ -114,7 +115,7 @@ Constraint: Not to assume every observed difference is a defect. Compare actual 
 
 
 
-3. Testing Strategy
+## 3. Testing Strategy
 
 I would automate critical UI workflows, including valid and locked-out login, product sorting, cart operations, checkout validation, total calculations etc. These tests provide repeatable regression coverage for important customer journeys.If the application exposes suitable APIs, I would test cart calculations, checkout validation, and order processing at the API layer. Unit tests should cover isolated price, tax, rounding, and validation logic.
 Manual testing would cover exploratory testing with problem users, usability, accessibility, browser compatibility, and unclear business rules.
@@ -123,19 +124,18 @@ The biggest remaining risk is an incorrect order or price calculation reaching p
 
 ## Manual-to-Automation Mapping
 
-The following table maps the manual test cases to their corresponding Selenium automation tests.
-
 | Manual Test Case | Scenario                            | Automation Test                                     | Status             |
 | ---------------- | ----------------------------------- | --------------------------------------------------- | ------------------ |
 | TC01             | Standard user login                 | `test_TC01_standard_user_can_login`                 | Automated — Passed |
 | TC02             | Locked-out user login               | `test_TC02_locked_out_user_cannot_login`            | Automated — Passed |
-| TC08             | Sort products by price, low to high | `test_TC06_products_sort_low_to_high`               | Automated — Passed |
-| TC10             | Add two products and remove one     | `test_TC10_add_two_products_remove_one`             | Automated — Passed |
+| TC08             | Sort products by price, low to high | `test_TC08_products_sort_low_to_high`               | Automated — Passed |
+| TC11             | Add two products and remove one     | `test_TC11_add_two_products_remove_one`             | Automated — Passed |
 | TC14             | Complete checkout                   | `test_TC14_TC18_complete_checkout_and_verify_total` | Automated — Passed |
 | TC15             | First name is required              | `test_TC15_TC16_TC17_missing_checkout_fields`       | Automated — Passed |
 | TC16             | Last name is required               | `test_TC15_TC16_TC17_missing_checkout_fields`       | Automated — Passed |
 | TC17             | Postal code is required             | `test_TC15_TC16_TC17_missing_checkout_fields`       | Automated — Passed |
 | TC18             | Verify checkout total               | `test_TC14_TC18_complete_checkout_and_verify_total` | Automated — Passed |
+
 
 ### Automation Notes
 

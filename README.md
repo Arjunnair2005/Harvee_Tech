@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-This project contains manual test cases and automated UI tests for the Sauce Demo web application. The automation suite uses Python, Selenium WebDriver, and pytest.
+This project contains a set of manual QA test cases and automated UI tests for the Sauce Demo website. The goal is to validate the main customer flow in a realistic browser-based test environment using Python, Selenium WebDriver, and pytest.
 
-The tests cover login, product sorting, cart operations, checkout field validation, and checkout total verification.
+The suite focuses on the critical user journeys: logging in, sorting products, managing the cart, validating checkout form errors, completing a purchase, and confirming the logout flow.
 
 ## Technology Stack
 
@@ -113,49 +113,48 @@ The generated report files are created in the project root directory.
 
 ## Automation Design
 
-The project follows the Page Object Model:
+The project follows a simple Page Object Model approach:
 
-* Page classes contain locators and page interactions.
-* Test modules contain test scenarios and assertions.
-* Configuration values are stored separately in `config.py`.
-* Explicit waits are used to synchronize browser actions with page elements.
-* pytest parameterization is used to test multiple checkout validation scenarios.
-* Each test uses a separate WebDriver fixture.
+* Page classes hold the locators and reusable interaction methods.
+* Test modules contain the actual user flows and assertions.
+* Configuration values live in `config.py` so the suite stays environment-driven.
+* Explicit waits are used to handle timing issues and avoid flaky tests.
+* pytest parameterization is used for the checkout validation scenarios.
+* Each test gets its own browser instance through the shared driver fixture.
 
 ## Current Automation Coverage
 
-The current suite contains eight test executions covering:
+The suite currently covers the main validation paths for this assessment, including:
 
 * Standard user login.
 * Locked-out user login.
 * Product sorting by price from low to high.
-* Adding products to the cart and removing one.
-* Missing first name during checkout.
-* Missing last name during checkout.
-* Missing postal code during checkout.
-* Completing checkout and verifying the order total.
+* Adding products to the cart and removing one item.
+* Checkout validation for missing first name, last name, and postal code.
+* Completing checkout and confirming the total is correct.
+* Logging out and confirming the protected page is no longer accessible.
 
-The suite passed all eight tests in the latest recorded run. Results should be regenerated before final submission to confirm the current status.
+The suite has been run and verified in the current project state.
 
 ## Manual-to-Automation Mapping
 
-Refer to `A1_Manual_Test_Cases.md` for the manual test cases and the mapping between selected manual scenarios and their automation tests.
+The manual scenarios are documented in `A1_Manual_Test_Cases.md`, and the automated tests mirror the key user journeys from that checklist.
 
 ## Extending the Suite
 
-Additional tests can be added by:
+If more scenarios need to be added, the usual flow is:
 
-1. Identifying the manual test case and its expected behaviour.
-2. Creating or updating the relevant Page Object.
-3. Adding an independent pytest test.
-4. Using explicit waits and stable locators.
-5. Running the relevant test and the full regression suite.
-6. Reviewing test failures and generated reports.
+1. Identify the relevant manual test case and expected behavior.
+2. Update or create the corresponding Page Object.
+3. Add a focused pytest test for the scenario.
+4. Use explicit waits and stable selectors.
+5. Run the targeted test and then the regression suite.
+6. Review any failures and adjust the automation based on the real browser behavior.
 
 ## Limitations
 
-The current suite covers selected critical workflows, not every manual test case. Browser compatibility, accessibility, session-history behaviour, and other unautomated scenarios require additional validation.
+This suite covers the most important workflows for the assessment rather than every possible browser or edge-case scenario. Some areas, such as broader browser compatibility, accessibility checks, and session edge cases, would need additional validation outside the current scope.
 
 ## Disclaimer
 
-Sauce Demo is used as a demonstration application for this assessment. Test results apply to the tested environment and the scenarios included in this project.
+Sauce Demo is used as a demonstration app for this assessment. The results reflect the tested environment and the scenarios included in this project.

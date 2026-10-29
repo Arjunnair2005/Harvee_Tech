@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 
+
 class InventoryPage:
     TITLE = (By.CSS_SELECTOR, ".title")
     SORT_DROPDOWN = (By.CSS_SELECTOR, "[data-test='product-sort-container']")
@@ -10,6 +11,7 @@ class InventoryPage:
     CART_LINK = (By.CLASS_NAME, "shopping_cart_link")
     ADD_BUTTONS = (By.CSS_SELECTOR, "[data-test^='add-to-cart']")
     REMOVE_BUTTON = (By.CSS_SELECTOR, "[data-test^='remove']")
+    ITEM_NAMES = (By.CSS_SELECTOR, ".inventory_item_name")
 
     def __init__(self, driver):
         self.driver = driver
@@ -41,9 +43,16 @@ class InventoryPage:
         buttons[1].click()
 
     def get_cart_badge_count(self):
-        return self.wait.until(
-            lambda driver: driver.find_element(*self.CART_BADGE).text
-        )
+        try:
+            badge = self.driver.find_element(*self.CART_BADGE)
+        except Exception:
+            return 0
+        return int(badge.text or 0)
+
+    def get_cart_item_names(self):
+        return [
+            item.text for item in self.driver.find_elements(*self.ITEM_NAMES)
+        ]
 
     def remove_one_product(self):
         self.wait.until(

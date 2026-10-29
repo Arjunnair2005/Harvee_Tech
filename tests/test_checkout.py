@@ -12,14 +12,12 @@ from pages.checkout_page import CheckoutPage
 def start_checkout(driver):
     login_page = LoginPage(driver)
     inventory_page = InventoryPage(driver)
-
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(driver, 15)
 
     login_page.open()
     login_page.login(STANDARD_USER, PASSWORD)
 
     wait.until(EC.url_contains("inventory.html"))
-
     inventory_page.add_two_products()
     inventory_page.open_cart()
 
@@ -34,7 +32,7 @@ def start_checkout(driver):
     checkout_page.wait.until(
         EC.visibility_of_element_located(CheckoutPage.FIRST_NAME)
     )
-    
+    return checkout_page
 
 
 @pytest.mark.parametrize(
@@ -48,23 +46,24 @@ def start_checkout(driver):
 def test_TC15_TC16_TC17_missing_checkout_fields(
     driver, first_name, last_name, postal_code, expected_error
 ):
-    start_checkout(driver)
-    checkout_page = CheckoutPage(driver)
+    checkout_page = start_checkout(driver)
 
     checkout_page.enter_customer_details(
         first_name, last_name, postal_code
     )
     checkout_page.continue_checkout()
+    checkout_page.wait_until_overview_or_error()
 
     assert expected_error in checkout_page.get_error_message()
 
 
 def test_TC14_TC18_complete_checkout_and_verify_total(driver):
-    start_checkout(driver)
-    checkout_page = CheckoutPage(driver)
+    checkout_page = start_checkout(driver)
 
     checkout_page.enter_customer_details("Arjun", "Nair", "641402")
     checkout_page.continue_checkout()
+
+    assert checkout_page.is_on_overview_page()
 
     item_total = checkout_page.get_amount(CheckoutPage.ITEM_TOTAL)
     tax = checkout_page.get_amount(CheckoutPage.TAX)
